@@ -49,7 +49,8 @@ void draw() {
 
   drawMoon(1120, 150);
   drawWaves(lowestY + 120);  // Draw behind tree
-  drawTree();                // Foreground
+  drawTree();    // Foreground
+  drawGrassBushes();
 }
 
 // -- Moon --
@@ -95,18 +96,43 @@ void drawTree() {
   beginShape();
   vertex(-90, 0);  // Narrower base start
   bezierVertex(-70, -100, -50, -300, -30, -500);
-  bezierVertex(-10, -650, -10, -800, 0, -880);
+  bezierVertex(-10, -650, -10, -800, 0, -750);
   bezierVertex(10, -800, 30, -650, 40, -500);
   bezierVertex(50, -300, 70, -100, 90, 0);  // Narrower base end
   endShape(CLOSE);
 
-  // Optional branch
   fill(110, 70, 40);
   beginShape();
   vertex(10, -400);
   bezierVertex(60, -460, 80, -520, 50, -540);
   bezierVertex(30, -560, 20, -520, 20, -470);
   endShape(CLOSE);
+
+  popMatrix();
+}
+
+void drawGrassBushes() {
+  pushMatrix();
+  translate(0, height - 20); // Start at bottom-left corner
+
+  int totalBlades = 20; // Increase number of blades
+  for (int i = 0; i < totalBlades; i++) {
+    float xOffset = i * 10;
+    float sway = sin(frameCount * 0.05 + i) * 8;
+    float curl = cos(frameCount * 0.03 + i) * 25;
+    float heightVariation = random(60, 120); // Random height range
+
+    fill(30, 120 + (i % 5) * 10, 50); // Slight variation in green
+    beginShape();
+    vertex(xOffset, 20);
+    bezierVertex(xOffset - 8 + sway, 10,
+                 xOffset - 6 + sway, -10,
+                 xOffset + sway, -heightVariation + curl);
+    bezierVertex(xOffset + 6 + sway, -10,
+                 xOffset + 8 + sway, 10,
+                 xOffset, 20);
+    endShape(CLOSE);
+  }
 
   popMatrix();
 }

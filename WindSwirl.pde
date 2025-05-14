@@ -22,7 +22,7 @@ class WindSwirl {
     }
 
     angle += 0.01; // Rotate to create swirling motion
-    opacity -= 1.5; // Fade the swirl over time
+    opacity -= 0.8; // Fade the swirl over time
 
     // Add some randomness to the length to mimic the flow of wind
     length += sin(angle * 0.3) * 2;
