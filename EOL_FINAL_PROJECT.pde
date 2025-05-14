@@ -4,7 +4,7 @@ float lowestY;
 
 void setup() {
   size(1250, 850);
-  background(20, 30, 70);
+
 
   // Initialize stars
   stars = new Star[9];
@@ -26,7 +26,8 @@ void setup() {
 }
 
 void draw() {
-  background(20, 30, 70);
+  drawSkyGradient();
+  drawCloudHorizon();
 
   // Update wind swirls
   for (int i = swirls.size() - 1; i >= 0; i--) {
@@ -135,4 +136,34 @@ void drawGrassBushes() {
   }
 
   popMatrix();
+}
+
+void drawSkyGradient() {
+  for (int y = 0; y < height; y++) {
+    float lerpAmt = map(y + sin(frameCount * 0.002 + y * 0.02) * 30, 0, height, 0, 1);
+    
+    // Top of the sky (deep indigo)
+    color top = color(15, 20, 50);
+    
+    // Horizon (lighter blue-gray)
+    color bottom = color(60, 90, 130);
+    
+    stroke(lerpColor(top, bottom, lerpAmt));
+    line(0, y, width, y);
+  }
+}
+
+void drawCloudHorizon() {
+  noStroke();
+  fill(255, 255, 255, 100);  // Soft white with transparency
+
+  beginShape();
+  for (float x = 0; x <= width; x += 20) {
+    // Lower y-value = higher in sky; stays below stars
+    float y = height * 0.60 + sin(x * 0.015 + frameCount * 0.005) * 15;
+    vertex(x, y);
+  }
+  vertex(width, height);  // Bottom right corner
+  vertex(0, height);      // Bottom left corner
+  endShape(CLOSE);
 }
