@@ -81,8 +81,8 @@ void drawWaves(float baseY) {
       float wave = sin((x * 0.01) + frameCount * 0.02 + layer) * 12;
       vertex(x, baseY + wave + offset);
     }
-    vertex(width, height);
-    vertex(0, height);
+    vertex(width, baseY + 100);
+    vertex(0, baseY + 100);
     endShape(CLOSE);
   }
 }
@@ -163,7 +163,8 @@ void drawCloudHorizon() {
     float y = height * 0.60 + sin(x * 0.015 + frameCount * 0.005) * 15;
     vertex(x, y);
   }
-  vertex(width, height);  // Bottom right corner
-  vertex(0, height);      // Bottom left corner
+ float bottomY = height * 0.75;
+  vertex(width, bottomY);
+  vertex(0, bottomY);
   endShape(CLOSE);
 }
