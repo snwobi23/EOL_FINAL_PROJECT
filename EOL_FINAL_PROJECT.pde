@@ -1,10 +1,10 @@
 Star[] stars;
 ArrayList<WindSwirl> swirls = new ArrayList<WindSwirl>();
 float lowestY;
+House[] houses;
 
 void setup() {
   size(1250, 850);
-
 
   // Initialize stars
   stars = new Star[9];
@@ -17,6 +17,12 @@ void setup() {
   stars[6] = new Star(900, 150, -0.012, 26);
   stars[7] = new Star(270, 260, 0.014, 22);
   stars[8] = new Star(570, 280, -0.016, 20);
+  
+  houses = new House[4];
+  houses[0] = new House(50, height - 80, 40, 60, color(90, 60, 50), color(60, 30, 20), true);
+  houses[1] = new House(120, height - 85, 50, 70, color(100, 70, 60), color(80, 40, 30), false);
+  houses[2] = new House(200, height - 75, 35, 50, color(110, 80, 70), color(70, 35, 25), true);
+  houses[3] = new House(270, height - 90, 45, 65, color(85, 55, 45), color(55, 25, 15), false);
 
   // Find lowest star Y
   lowestY = 0;
@@ -46,6 +52,10 @@ void draw() {
   for (Star s : stars) {
     s.update();
     s.display();
+  }
+  
+  for (House h: houses) {
+    h.display();
   }
 
   drawMoon(1120, 150);
@@ -116,22 +126,22 @@ void drawGrassBushes() {
   pushMatrix();
   translate(0, height - 20); // Start at bottom-left corner
 
-  int totalBlades = 20; // Increase number of blades
+  int totalBlades = 10; // Increase number of blades
   for (int i = 0; i < totalBlades; i++) {
     float xOffset = i * 10;
-    float sway = sin(frameCount * 0.05 + i) * 8;
-    float curl = cos(frameCount * 0.03 + i) * 25;
+    float sway = sin(frameCount * 0.05 + i) * 3;
+    float curl = cos(frameCount * 0.3 + i) * 20;
     float heightVariation = random(60, 120); // Random height range
 
     fill(30, 120 + (i % 5) * 10, 50); // Slight variation in green
     beginShape();
     vertex(xOffset, 20);
     bezierVertex(xOffset - 8 + sway, 10,
-                 xOffset - 6 + sway, -10,
-                 xOffset + sway, -heightVariation + curl);
-    bezierVertex(xOffset + 6 + sway, -10,
-                 xOffset + 8 + sway, 10,
-                 xOffset, 20);
+      xOffset - 6 + sway, -10,
+      xOffset + sway, -heightVariation + curl);
+    bezierVertex(xOffset + 20 + sway, -50,
+      xOffset + 8 + sway, 20,
+      xOffset, 20);
     endShape(CLOSE);
   }
 
@@ -141,13 +151,13 @@ void drawGrassBushes() {
 void drawSkyGradient() {
   for (int y = 0; y < height; y++) {
     float lerpAmt = map(y + sin(frameCount * 0.002 + y * 0.02) * 30, 0, height, 0, 1);
-    
+
     // Top of the sky (deep indigo)
     color top = color(15, 20, 50);
-    
+
     // Horizon (lighter blue-gray)
     color bottom = color(60, 90, 130);
-    
+
     stroke(lerpColor(top, bottom, lerpAmt));
     line(0, y, width, y);
   }
@@ -163,7 +173,7 @@ void drawCloudHorizon() {
     float y = height * 0.60 + sin(x * 0.015 + frameCount * 0.005) * 15;
     vertex(x, y);
   }
- float bottomY = height * 0.75;
+  float bottomY = height * 0.75;
   vertex(width, bottomY);
   vertex(0, bottomY);
   endShape(CLOSE);

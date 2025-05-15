@@ -30,12 +30,12 @@ class Star {
     for (int i = layers; i >= 1; i--) {
       float r = size + i * 6;
       int alpha = int(255 * (1.0 / i) * twinkle);  // Fade the outer rings
-      fill(255, 255, 100, alpha);
+      fill(255, 255, 255, alpha);
       ellipse(0, 0, r, r);
     }
 
     // Inner core of the star
-    fill(255, 255, 150, int(255 * twinkle));
+    fill(255, 255, 100, int(255 * twinkle));
     ellipse(0, 0, size, size);
 
     popMatrix();
