@@ -1,48 +1,37 @@
 class House {
   float x, y, w, h;
-  color wallColor, roofColor;
+  color bodyColor, roofColor;
   boolean hasChimney;
+  int roofType; // 0 = triangle, 1 = slanted
 
-  House(float x, float y, float w, float h, color wallColor, color roofColor, boolean hasChimney) {
+  House(float x, float y, float w, float h, color bodyColor, color roofColor, boolean hasChimney, int roofType) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
-    this.wallColor = wallColor;
+    this.bodyColor = bodyColor;
     this.roofColor = roofColor;
     this.hasChimney = hasChimney;
+    this.roofType = roofType;
   }
 
   void display() {
-    // House base
-    fill(wallColor);
+    noStroke();
+    fill(bodyColor);
     rect(x, y - h, w, h);
 
-    // Roof
     fill(roofColor);
-    triangle(x - 5, y - h, x + w / 2, y - h - w / 2, x + w + 5, y - h);
-
-    // Windows (2 glowing yellow windows)
-    fill(255, 240, 100, 220);
-    rect(x + w * 0.2, y - h + 15, 8, 12);
-    rect(x + w * 0.6, y - h + 15, 8, 12);
-
-    // Chimney
-    if (hasChimney) {
-      float chimneyX = x + w * 0.75;
-      float chimneyY = y - h - w * 0.2;
-      fill(roofColor);
-      rect(chimneyX, chimneyY, 6, 20);
-      drawSmoke(chimneyX + 3, chimneyY);
+    if (roofType == 0) {
+      // Triangle roof
+      triangle(x, y - h, x + w / 2, y - h - w / 2, x + w, y - h);
+    } else {
+      // Slanted roof
+      quad(x, y - h, x + w, y - h - 10, x + w, y - h, x, y - h + 10);
     }
-  }
 
-  void drawSmoke(float sx, float sy) {
-    noStroke();
-    for (int i = 0; i < 3; i++) {
-      float yOffset = sin(frameCount * 0.05 + i) * 3;
-      fill(200, 200, 200, 80 - i * 20);
-      ellipse(sx + i * 2, sy - i * 15 + yOffset, 12 - i * 3, 12 - i * 3);
+    if (hasChimney) {
+      fill(roofColor);
+      rect(x + w * 0.75, y - h - 20, 6, 20);
     }
   }
 }

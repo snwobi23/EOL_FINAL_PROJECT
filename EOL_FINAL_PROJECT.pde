@@ -29,7 +29,21 @@ void setup() {
   for (Star s : stars) {
     if (s.y > lowestY) lowestY = s.y;
   }
+  float houseBaseY = lowestY + 160;
+  houses = new House[10];
+  for (int i = 0; i < houses.length; i++) {
+    float x = 80 + i * 110;
+    float terrainY = houseBaseY + sin(x * 0.01) * 25;
+    float w = random(35, 55);
+    float h = random(50, 75);
+    color body = color(80 + i * 5, 60 + i * 3, 40 + i * 2);
+    color roof = color(50 + i * 4, 30 + i * 2, 20 + i);
+    boolean hasChimney = i % 2 == 0;
+    int roofType = int(random(2)); // 0 = triangle, 1 = slanted
+    houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
+  }
 }
+
 
 void draw() {
   drawSkyGradient();
