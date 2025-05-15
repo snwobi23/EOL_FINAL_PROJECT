@@ -18,38 +18,33 @@ void setup() {
   stars[7] = new Star(270, 260, 0.014, 22);
   stars[8] = new Star(570, 280, -0.016, 20);
   
-  houses = new House[4];
-  houses[0] = new House(50, height - 80, 40, 60, color(90, 60, 50), color(60, 30, 20), true);
-  houses[1] = new House(120, height - 85, 50, 70, color(100, 70, 60), color(80, 40, 30), false);
-  houses[2] = new House(200, height - 75, 35, 50, color(110, 80, 70), color(70, 35, 25), true);
-  houses[3] = new House(270, height - 90, 45, 65, color(85, 55, 45), color(55, 25, 15), false);
-
   // Find lowest star Y
   lowestY = 0;
   for (Star s : stars) {
     if (s.y > lowestY) lowestY = s.y;
   }
-  float houseBaseY = lowestY + 160;
-  houses = new House[10];
-  for (int i = 0; i < houses.length; i++) {
-    float x = 80 + i * 110;
-    float terrainY = houseBaseY + sin(x * 0.01) * 25;
-    float w = random(35, 55);
-    float h = random(50, 75);
-    color body = color(80 + i * 5, 60 + i * 3, 40 + i * 2);
-    color roof = color(50 + i * 4, 30 + i * 2, 20 + i);
-    boolean hasChimney = i % 2 == 0;
-    int roofType = int(random(2)); // 0 = triangle, 1 = slanted
-    houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
+
+  // Initialize houses
+float houseBaseY = height * 0.96;
+houses = new House[10];
+for (int i = 0; i < houses.length; i++) {
+  float x = 80 + i * 110;
+  float terrainY = houseBaseY + sin(x * 0.01) * 25;
+  float w = random(35, 55);
+  float h = random(50, 75);
+  color body = color(80 + i * 5, 60 + i * 3, 40 + i * 2);
+  color roof = color(50 + i * 4, 30 + i * 2, 20 + i);
+  boolean hasChimney = i % 2 == 0;
+  int roofType = int(random(2));
+  houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
   }
 }
-
 
 void draw() {
   drawSkyGradient();
   drawCloudHorizon();
 
-  // Update wind swirls
+  // Update and draw swirls
   for (int i = swirls.size() - 1; i >= 0; i--) {
     WindSwirl w = swirls.get(i);
     w.update();
@@ -67,14 +62,14 @@ void draw() {
     s.update();
     s.display();
   }
-  
-  for (House h: houses) {
+
+  for (House h : houses) {
     h.display();
   }
 
   drawMoon(1120, 150);
-  drawWaves(lowestY + 120);  // Draw behind tree
-  drawTree();    // Foreground
+  drawWaves(lowestY + 120);
+  drawTree();
   drawGrassBushes();
 }
 
@@ -93,7 +88,7 @@ void drawMoon(float x, float y) {
   ellipse(x + 20, y, 75, 75);
 }
 
-// -- Waves (Background) --
+// -- Waves --
 void drawWaves(float baseY) {
   noStroke();
   for (int layer = 0; layer < 3; layer++) {
@@ -111,19 +106,19 @@ void drawWaves(float baseY) {
   }
 }
 
+// -- Tree --
 void drawTree() {
   pushMatrix();
-  translate(100, height);  // Anchor to bottom-left
-
+  translate(100, height);
   noStroke();
-  fill(101, 67, 33); // Brown
+  fill(101, 67, 33);
 
   beginShape();
-  vertex(-90, 0);  // Narrower base start
+  vertex(-90, 0);
   bezierVertex(-70, -100, -50, -300, -30, -500);
   bezierVertex(-10, -650, -10, -800, 0, -750);
   bezierVertex(10, -800, 30, -650, 40, -500);
-  bezierVertex(50, -300, 70, -100, 90, 0);  // Narrower base end
+  bezierVertex(50, -300, 70, -100, 90, 0);
   endShape(CLOSE);
 
   fill(110, 70, 40);
@@ -132,58 +127,54 @@ void drawTree() {
   bezierVertex(60, -460, 80, -520, 50, -540);
   bezierVertex(30, -560, 20, -520, 20, -470);
   endShape(CLOSE);
-
   popMatrix();
 }
 
+// -- Grass Bushes --
 void drawGrassBushes() {
   pushMatrix();
-  translate(0, height - 20); // Start at bottom-left corner
+  translate(0, height - 20);
 
-  int totalBlades = 10; // Increase number of blades
+  int totalBlades = 10;
   for (int i = 0; i < totalBlades; i++) {
     float xOffset = i * 10;
     float sway = sin(frameCount * 0.05 + i) * 3;
     float curl = cos(frameCount * 0.3 + i) * 20;
-    float heightVariation = random(60, 120); // Random height range
+    float heightVariation = random(60, 120);
 
-    fill(30, 120 + (i % 5) * 10, 50); // Slight variation in green
+    fill(30, 120 + (i % 5) * 10, 50);
     beginShape();
     vertex(xOffset, 20);
     bezierVertex(xOffset - 8 + sway, 10,
-      xOffset - 6 + sway, -10,
-      xOffset + sway, -heightVariation + curl);
+                 xOffset - 6 + sway, -10,
+                 xOffset + sway, -heightVariation + curl);
     bezierVertex(xOffset + 20 + sway, -50,
-      xOffset + 8 + sway, 20,
-      xOffset, 20);
+                 xOffset + 8 + sway, 20,
+                 xOffset, 20);
     endShape(CLOSE);
   }
 
   popMatrix();
 }
 
+// -- Sky Gradient --
 void drawSkyGradient() {
   for (int y = 0; y < height; y++) {
     float lerpAmt = map(y + sin(frameCount * 0.002 + y * 0.02) * 30, 0, height, 0, 1);
-
-    // Top of the sky (deep indigo)
     color top = color(15, 20, 50);
-
-    // Horizon (lighter blue-gray)
     color bottom = color(60, 90, 130);
-
     stroke(lerpColor(top, bottom, lerpAmt));
     line(0, y, width, y);
   }
 }
 
+// -- Cloud Horizon --
 void drawCloudHorizon() {
   noStroke();
-  fill(255, 255, 255, 100);  // Soft white with transparency
+  fill(255, 255, 255, 100);
 
   beginShape();
   for (float x = 0; x <= width; x += 20) {
-    // Lower y-value = higher in sky; stays below stars
     float y = height * 0.60 + sin(x * 0.015 + frameCount * 0.005) * 15;
     vertex(x, y);
   }
