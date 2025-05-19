@@ -2,6 +2,7 @@ Star[] stars;
 ArrayList<WindSwirl> swirls = new ArrayList<WindSwirl>();
 float lowestY;
 House[] houses;
+boolean flickerLights = false;
 
 void setup() {
   size(1250, 850);
@@ -71,6 +72,12 @@ void draw() {
   drawWaves(lowestY + 120);
   drawTree();
   drawGrassBushes();
+}
+
+void keyPressed() {
+  if ( key == 'f' || key == 'F') {
+    flickerLights =! flickerLights;
+ }
 }
 
 // -- Moon --
