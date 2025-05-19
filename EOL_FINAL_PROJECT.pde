@@ -33,8 +33,8 @@ for (int i = 0; i < houses.length; i++) {
   float terrainY = houseBaseY + sin(x * 0.01) * 25;
   float w = random(35, 55);
   float h = random(50, 75);
-  color body = color(80 + i * 5, 60 + i * 3, 40 + i * 2);
-  color roof = color(50 + i * 4, 30 + i * 2, 20 + i);
+  color body = color(random(80, 180), random(60, 140), random(40, 120));
+  color roof = color(random(50, 100), random(30, 70), random(20, 60));
   boolean hasChimney = i % 2 == 0;
   int roofType = int(random(2));
   houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
@@ -65,6 +65,9 @@ void draw() {
   }
 
   for (House h : houses) {
+  if (flickerLights && frameCount % 10 == 0) {
+      h.toggleLights();
+    }
     h.display();
   }
 

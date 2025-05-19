@@ -43,8 +43,25 @@ class House {
     float winW = w / 5;
     float winH = h / 5;
     fill(lightsOn ? color(255, 255, 100, random(180, 255)) : color(20, 20, 30));
-    rect(x + w * 0.2, y - h + h * 0.3, winW, winH); // Left window
-    rect(x + w * 0.6, y - h + h * 0.3, winW, winH); // Right window
+    float leftX = x + w * 0.2;
+    float rightX = x + w * 0.6;
+    float winY = y - h + h * 0.3;
+
+    rect(leftX, winY, winW, winH);
+    rect(rightX, winY, winW, winH);
+
+    // Bars on windows
+    stroke(40);
+    strokeWeight(1);
+    for (int i = 1; i < 3; i++) {
+      float lx = leftX + i * winW / 3;
+      float rx = rightX + i * winW / 3;
+      line(lx, winY, lx, winY + winH);
+      line(rx, winY, rx, winY + winH);
+    }
+    line(leftX, winY + winH / 2, leftX + winW, winY + winH / 2);
+    line(rightX, winY + winH / 2, rightX + winW, winY + winH / 2);
+    noStroke();
   }
 
   void drawSmoke(float sx, float sy) {
