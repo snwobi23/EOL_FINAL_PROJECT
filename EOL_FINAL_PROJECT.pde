@@ -63,6 +63,8 @@ void draw() {
     s.update();
     s.display();
   }
+  
+  drawHouseGround();
 
   for (House h : houses) {
   if (flickerLights && frameCount % 10 == 0) {
@@ -191,5 +193,39 @@ void drawCloudHorizon() {
   float bottomY = height * 0.75;
   vertex(width, bottomY);
   vertex(0, bottomY);
+  endShape(CLOSE);
+}
+
+void drawHouseGround() {
+ noStroke();
+  
+  // Ground height and shape
+  float topY = height * 0.75;  // Pull it up more
+  
+  // Generate grainy texture as image
+  PGraphics groundTexture = createGraphics(width, height);
+  groundTexture.beginDraw();
+  groundTexture.noStroke();
+  for (int y = int(topY); y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      float noiseVal = noise(x * 0.03, y * 0.03);
+      color baseColor = color(50, 40, 60);  // dark bluish base
+      color grainColor = color(80, 60, 40); // brownish tone
+      color blended = lerpColor(baseColor, grainColor, noiseVal * 0.8);
+      groundTexture.set(x, y, blended);
+    }
+  }
+  groundTexture.endDraw();
+  image(groundTexture, 0, 0);  // draw grainy base first
+
+  // Draw the actual terrain shape over the grain
+  fill(0, 0, 0, 40); // subtle shadow fill to darken terrain
+  beginShape();
+  for (int x = 0; x <= width; x += 10) {
+    float yOffset = sin(x * 0.01) * 25;
+    vertex(x, topY + yOffset);
+  }
+  vertex(width, height);
+  vertex(0, height);
   endShape(CLOSE);
 }
