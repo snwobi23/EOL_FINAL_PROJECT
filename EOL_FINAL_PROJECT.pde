@@ -18,7 +18,7 @@ void setup() {
   stars[6] = new Star(900, 150, -0.012, 26);
   stars[7] = new Star(270, 260, 0.014, 22);
   stars[8] = new Star(570, 280, -0.016, 20);
-  
+
   // Find lowest star Y
   lowestY = 0;
   for (Star s : stars) {
@@ -26,18 +26,18 @@ void setup() {
   }
 
   // Initialize houses
-float houseBaseY = height * 0.96;
-houses = new House[10];
-for (int i = 0; i < houses.length; i++) {
-  float x = 80 + i * 110;
-  float terrainY = houseBaseY + sin(x * 0.01) * 25;
-  float w = random(35, 55);
-  float h = random(50, 75);
-  color body = color(random(80, 180), random(60, 140), random(40, 120));
-  color roof = color(random(50, 100), random(30, 70), random(20, 60));
-  boolean hasChimney = i % 2 == 0;
-  int roofType = int(random(2));
-  houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
+  float houseBaseY = height * 0.96;
+  houses = new House[10];
+  for (int i = 0; i < houses.length; i++) {
+    float x = 80 + i * 110;
+    float terrainY = houseBaseY + sin(x * 0.01) * 25;
+    float w = random(35, 55);
+    float h = random(50, 75);
+    color body = color(random(80, 180), random(60, 140), random(40, 120));
+    color roof = color(random(50, 100), random(30, 70), random(20, 60));
+    boolean hasChimney = i % 2 == 0;
+    int roofType = int(random(2));
+    houses[i] = new House(x, terrainY, w, h, body, roof, hasChimney, roofType);
   }
 }
 
@@ -63,11 +63,11 @@ void draw() {
     s.update();
     s.display();
   }
-  
+
   drawHouseGround();
 
   for (House h : houses) {
-  if (flickerLights && frameCount % 10 == 0) {
+    if (flickerLights && frameCount % 10 == 0) {
       h.toggleLights();
     }
     h.display();
@@ -82,7 +82,7 @@ void draw() {
 void keyPressed() {
   if ( key == 'f' || key == 'F') {
     flickerLights =! flickerLights;
- }
+  }
 }
 
 // -- Moon --
@@ -158,11 +158,11 @@ void drawGrassBushes() {
     beginShape();
     vertex(xOffset, 20);
     bezierVertex(xOffset - 8 + sway, 10,
-                 xOffset - 6 + sway, -10,
-                 xOffset + sway, -heightVariation + curl);
+      xOffset - 6 + sway, -10,
+      xOffset + sway, -heightVariation + curl);
     bezierVertex(xOffset + 20 + sway, -50,
-                 xOffset + 8 + sway, 20,
-                 xOffset, 20);
+      xOffset + 8 + sway, 20,
+      xOffset, 20);
     endShape(CLOSE);
   }
 
@@ -197,11 +197,11 @@ void drawCloudHorizon() {
 }
 
 void drawHouseGround() {
- noStroke();
-  
+  noStroke();
+
   // Ground height and shape
   float topY = height * 0.75;  // Pull it up more
-  
+
   // Generate grainy texture as image
   PGraphics groundTexture = createGraphics(width, height);
   groundTexture.beginDraw();

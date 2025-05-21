@@ -19,11 +19,11 @@ class House {
 
   void display() {
     noStroke();
-    
+
     // House Color
     fill(bodyColor);
     rect(x, y - h, w, h);
-    
+
     // Roof
     fill(roofColor);
     if (roofType == 0) {

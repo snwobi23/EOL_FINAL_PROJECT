@@ -23,7 +23,7 @@ class Star {
     translate(x, y);
     rotate(angle);
     noStroke();
-    
+
     float twinkle = sin(frameCount * 0.05 + twinkleOffset) * 0.5 + 0.5;
 
     int layers = 10;
