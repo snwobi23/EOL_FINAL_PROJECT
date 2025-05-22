@@ -19,27 +19,35 @@ class House {
 
   void display() {
     noStroke();
+    drawBody();
+    drawRoof();
+    if (hasChimney) drawChimney();
+    drawWindows();
+    drawWindowBars();
+    noStroke();
+  }
 
-    // House Color
+  void drawBody() {
     fill(bodyColor);
     rect(x, y - h, w, h);
+  }
 
-    // Roof
+  void drawRoof() {
     fill(roofColor);
     if (roofType == 0) {
-      // Triangle roof
       triangle(x, y - h, x + w / 2, y - h - w / 2, x + w, y - h);
     } else {
-      // Slanted roof
       quad(x, y - h, x + w, y - h - 10, x + w, y - h, x, y - h + 10);
     }
+  }
 
-    if (hasChimney) {
-      fill(roofColor);
-      rect(x + w * 0.75, y - h - 20, 6, 20);
-      drawSmoke(x + w * 0.75 + 3, y - h - 20);
-    }
-    // Windows
+  void drawChimney() {
+    fill(roofColor);
+    rect(x + w * 0.75, y - h - 20, 6, 20);
+    drawSmoke(x + w * 0.75 + 3, y - h - 20);
+  }
+
+  void drawWindows() {
     float winW = w / 5;
     float winH = h / 5;
     fill(lightsOn ? color(255, 255, 100, random(180, 255)) : color(20, 20, 30));
@@ -49,8 +57,15 @@ class House {
 
     rect(leftX, winY, winW, winH);
     rect(rightX, winY, winW, winH);
+  }
 
-    // Bars on windows
+  void drawWindowBars() {
+    float winW = w / 5;
+    float winH = h / 5;
+    float leftX = x + w * 0.2;
+    float rightX = x + w * 0.6;
+    float winY = y - h + h * 0.3;
+
     stroke(40);
     strokeWeight(1);
     for (int i = 1; i < 3; i++) {
@@ -61,7 +76,6 @@ class House {
     }
     line(leftX, winY + winH / 2, leftX + winW, winY + winH / 2);
     line(rightX, winY + winH / 2, rightX + winW, winY + winH / 2);
-    noStroke();
   }
 
   void drawSmoke(float sx, float sy) {
